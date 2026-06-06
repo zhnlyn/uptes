@@ -151,9 +151,9 @@
     <p>A <span id="qtotA">60</span>-question practice test modelled on UPSC objective recruitment-test conventions, weighted toward the applied subjects that matter for a Directorate of Income Tax (Systems) role — DBMS, OS, Networks, Security, and the data/IoT topics — with theory mixed in.</p>
     <ul class="rules">
       <li><span class="k">+3.00</span><span>Each correct answer earns three marks.</span></li>
-      <li><span class="k">−0.33</span><span>Each wrong answer deducts one-third of a mark (standard UPSC penalty). Multiple selections aren't possible here, but in the real test marking two options counts as wrong.</span></li>
+      <li><span class="k">−1.00</span><span>Each wrong answer deducts one mark (one-third of the question's marks, standard UPSC penalty). Multiple selections aren't possible here, but in the real test marking two options counts as wrong.</span></li>
       <li><span class="k">&nbsp;0.00</span><span>Skipped questions carry no penalty — leave a question blank rather than blind-guess.</span></li>
-      </li>
+      <li><span class="k">24 sec</span><span>≈ time per question if the real RT is ~300Q / 2hr. This set gives you the same pace: <span id="paceA">24</span> minutes for <span id="qtotB">60</span> questions.</span></li>
     </ul>
     <div class="toggle-row">
       <span class="sub" style="margin:0">Timer</span>
@@ -247,7 +247,8 @@ const $ = id => document.getElementById(id);
 /* fill dynamic counts everywhere */
 (function init(){
   const n=Q.length;
-  ['qtot','qtot2','qtot3','qtotA','qtotB'].forEach(id=>{const el=$(id); if(el) el.textContent=n;});
+  ['qtot','qtot3','qtotA','qtotB'].forEach(id=>{const el=$(id); if(el) el.textContent=n;});
+  $('qtot2').textContent=n*3;
   const mins=Math.round(n*24/60);
   $('paceA').textContent=mins;
   $('timedBtn').textContent=`Timed (${String(Math.floor(n*24/60)).padStart(2,'0')}:${String((n*24)%60).padStart(2,'0')})`;
@@ -333,7 +334,7 @@ function submit(){
       else wrong++;
     }
   });
-  const net=correct - wrong/3;
+  const net=correct*3 - wrong/3;
   const attempted=correct+wrong;
   const acc=attempted?Math.round(correct/attempted*100):0;
 
@@ -346,7 +347,7 @@ function submit(){
   $('sAcc').textContent=acc+'%';
 
   let verdict;
-  const pct=net/Q.length*100;
+  const pct=net/(Q.length*3)*100;
   if(pct>=75) verdict="Strong — comfortably above a typical screening cutoff. Keep accuracy this high.";
   else if(pct>=55) verdict="Solid working level. Tighten the weak subjects below and watch wrong-answer leakage.";
   else if(pct>=40) verdict="Foundation is there; negative marking is hurting you — guess less, revise the low-hit-rate subjects.";
